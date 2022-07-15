@@ -78,8 +78,18 @@ public class Train {
 
             case "red": 
                 // ugly solution of getting train position and using function to measure speed: probably inefficient too
-                
-            
+
+                int trainPos = this.get_pos().get_train_front(); // this could possibly create errors 
+
+
+                // THIS IF STATEMENT NEEDS WORK. SPEED OF TRAIN MAY MEAN DECEL IS STARTED TOO LATE.
+                // possibly fix by brute force: start decel at max delay between trainpos?
+                // then just crawl up to signal at 1 u/s if there is gap between train front and signal?
+
+
+                if ((this.get_pos().get_track_length() - trainPos) > 200) {  // checks is in final decel stage. 
+                    break;
+                } else {;}
                 // irl train issue here / emulation issue. how does a train decelerate?
                 // distance-time graph is a parabolica with linear deceleration
 
@@ -134,3 +144,8 @@ public class Train {
             
             // MUST be careful train does not SPAD: should be encapsulated in red signal case
             //
+
+
+
+            // CURRENT MAJOR ISSUE: MIXING UP SPEED WITH DISTANCE/POSITION.
+            // trains travel at a speed. emulation can only update the **position** periodically.
