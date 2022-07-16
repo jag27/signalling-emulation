@@ -33,27 +33,10 @@ public class Train {
     }
 
     public void do_move(Signal sig) {
-        switch (sig.get_aspect()){
-            case "green":
+        this.speed = calc_speed(this.speed, this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
+        String debug = this.get_pos().move_train(this.speed); // get status of train relative to track during track move for debug
 
-                this.speed = 30;
-                break;
-            
-            case "double yellow":
-                while (this.speed > 20) {
-                    this.speed -= 1;
-                }
-                break;
-
-            case "yellow":
-                while (this.speed > 10) {
-                    this.speed -= 1;
-                }
-                break;
-            
-            case "red":
-                this.speed = 0;
-                break;
+        
             //  CREATE A MAX SPEED?
             //  DECELERATE AND ACCELERATE FUNCTIONS?
             //  SCALABLE WITH LINE SPEED LIMITS?
@@ -79,22 +62,19 @@ public class Train {
             case "red": 
                 // ugly solution of getting train position and using function to measure speed: probably inefficient too
 
-                int trainPos = this.get_pos().get_train_front(); // this could possibly create errors 
-
-
                 // THIS IF STATEMENT NEEDS WORK. SPEED OF TRAIN MAY MEAN DECEL IS STARTED TOO LATE.
                 // possibly fix by brute force: start decel at max delay between trainpos?
                 // then just crawl up to signal at 1 u/s if there is gap between train front and signal?
 
 
-                if ((this.get_pos().get_track_length() - trainPos) > 200) {  // checks is in final decel stage. 
-                    break;
-                } else {;}
+                if ((distance - trainPos) > 100) {  // checks is in final decel stage. 
+                    decelMaxSpeed = sYellowSpeed;
+                } else if (currSpeed > 0) {return currSpeed - 1;}  
+                else {return 0;}
                 // irl train issue here / emulation issue. how does a train decelerate?
                 // distance-time graph is a parabolica with linear deceleration
 
             
-                break;
             
             case "green" : 
                 if (maxSpeed == currSpeed) {
@@ -110,7 +90,7 @@ public class Train {
                 if (decelMaxSpeed == sYellowSpeed) { ;} // will need testing if breaks out of if statement or case statement} 
                 else {decelMaxSpeed = dYellowSpeed;} 
 
-            default: 
+            default: // technically failsafe lol, will eventually slow speed to stop if no above cases hit
             
             if (currSpeed > decelMaxSpeed) {
                 return currSpeed-2;  // speed may be below max momentarily, fixed inside this case

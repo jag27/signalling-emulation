@@ -62,22 +62,22 @@ public class Track {
             return "no train";
         } else {
             if ((this.trainRear+amount) > this.trackLength) {
-                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - trackLength));
+                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - this.trackLength));
                 this.clear_train();
-                return "cleared";
+                return this.nextTrack.get_train().get_td() + " cleared";
             } else if ((this.trainFront+amount) > this.trackLength) {
-                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - trackLength));
+                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - this.trackLength));
                 this.trainFront += amount;
                 this.trainRear += amount;
-                return "transitioning";
+                return this.get_train().get_td() + " transitioning";
             } else if ((this.trainFront - this.train.get_length()) < 0) {
                 this.trainFront += amount;
                 this.trainRear = this.trainFront - this.train.get_length();
-                return "transitioning";
+                return this.get_train().get_td() + " transitioning";
             } else {
                 this.trainFront += amount;
                 this.trainRear += amount;
-                return "moved";
+                return this.get_train().get_td() + " moved";
             }
         }
     }
