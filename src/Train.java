@@ -36,6 +36,8 @@ public class Train {
         this.speed = calc_speed(this.speed, this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
         String debug = this.get_pos().move_train(this.speed); // get status of train relative to track during track move for debug
 
+        // possible improvement could be made here: get rid of this function and just have calcspeed?
+        
         // should be finished here? below comments are thought processes; i might have spent more time on comments/ brainstorming
         // than actually coding, but it helps me find solutions and makes me feel cool if someone else ever reads this.
 
