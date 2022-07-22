@@ -8,6 +8,14 @@ public class App {
         ArrayList<Track> trackArray = Setup.get_tracks(numTracks);
         ArrayList<Signal> sigArray = Setup.get_sigs(trackArray);
         ArrayList<Train> trainArray = Setup.get_trains(numTrains, trackArray);
+
+        // set up graphical interface here
+        // currently not working on laptop -- need to install javafx, might work on desktop?
+        javafx
+
+
+
+        // update loop here: move train first, then update signal.
         while (true){
             Thread.sleep(1000);
             for (Train train: trainArray) {
