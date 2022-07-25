@@ -19,7 +19,7 @@ public class Setup {
     public static ArrayList<Train> get_trains(int num, ArrayList<Track> trackList) {
         Random rand = new Random();
         ArrayList<Train> toReturn = new ArrayList<Train>();
-        for (int i=0; i<=num; i++) {
+        for (int i=0; i<num; i++) {
             int len = rand.nextInt(50);
             while (len < 10) {
                 len = rand.nextInt(50);

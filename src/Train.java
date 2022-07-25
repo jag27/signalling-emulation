@@ -32,6 +32,10 @@ public class Train {
         return this.currTrack;
     }
 
+    public void go_next_track() {
+        this.currTrack = this.currTrack.get_next_track();
+    }
+
     public void do_move(Signal sig) {
         this.speed = calc_speed(this.speed, this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
         String debug = this.get_pos().move_train(this.speed); // get status of train relative to track during track move for debug
@@ -63,6 +67,9 @@ public class Train {
     private int calc_speed(int currSpeed, int maxSpeed, String situation, int trainPos) {         // this function is always called from do_move
         int decelMaxSpeed = 0;
         System.out.println(situation + this.get_td());
+        System.out.println("current speed:");
+        System.out.println(currSpeed);
+        System.out.println("max speed");
         switch (situation) {
 
             case "red": 
@@ -73,11 +80,12 @@ public class Train {
                 // then just crawl up to signal at 1 u/s if there is gap between train front and signal?
 
                 if ((this.get_pos().get_track_length() - trainPos) > 200) {  // checks is in final decel stage. 
-                    decelMaxSpeed = sYellowSpeed;  // train is not yet slowing to a stop, carry on coast at single yellow speed
+                    decelMaxSpeed = this.sYellowSpeed;  // train is not yet slowing to a stop, carry on coast at single yellow speed
+                    System.out.println(this.sYellowSpeed);
                 } else if (trainPos == this.get_pos().get_track_length()) {
                     return 0;  // train is at red signal: no movement
 
-                } else if (currSpeed > 1) {decelMaxSpeed = 1;}   // decelerate to 1ups; should arrive at said speed before passing signal
+                } else if (currSpeed > 1) {decelMaxSpeed = 1; System.out.println(decelMaxSpeed);}   // decelerate to 1ups; should arrive at said speed before passing signal
                 else {return 1;} // bloat or efficiency: a quick break for trains doing 1ups already and are not at signal
                 
                 
@@ -87,20 +95,26 @@ public class Train {
             
             
             case "green" : 
-                if (maxSpeed == currSpeed) {
-                    return currSpeed;
+            // inefficieny here, not lagging yet tho.
+                if (this.maxSpeed == currSpeed) {
+                    if (decelMaxSpeed != 0) {
+                        return currSpeed;
+                    }
                 } else { 
-                    return currSpeed+1;
+                    if (decelMaxSpeed != 0) {
+                        return currSpeed;
+                    }
                 }
         
-            case "single yellow": decelMaxSpeed = sYellowSpeed;
+            case "yellow": decelMaxSpeed = this.sYellowSpeed;
 
 
             case "double yellow": 
-                if (decelMaxSpeed == sYellowSpeed) { ;} // will need testing if breaks out of if statement or case statement} 
-                else {decelMaxSpeed = dYellowSpeed;} 
+                if (decelMaxSpeed == this.sYellowSpeed) { System.out.println("");} // will need testing if breaks out of if statement or case statement} 
+                else {decelMaxSpeed = this.dYellowSpeed;} 
 
             default: // technically failsafe lol, will eventually slow speed to stop if no above cases hit
+            System.out.println(decelMaxSpeed);
             
             if (currSpeed > decelMaxSpeed) {
                 return currSpeed-2;  // speed may be below max momentarily, fixed inside this case
