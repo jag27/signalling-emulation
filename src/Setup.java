@@ -9,9 +9,9 @@ public class Setup {
             toReturn.add(sig);
             track.add_signal(sig);
         }
-        for (int i=0; i<=trackList.size(); i++) {
-            if (i==trackList.size()) {toReturn.get(i).link_signals(toReturn.get(i-1), toReturn.get(-1));}
-            else {toReturn.get(i).link_signals(toReturn.get(i-1), toReturn.get(i+1));}
+        for (int i=0; i<trackList.size(); i++) {
+            if (i==(trackList.size()-1)) {toReturn.get(i).link_signals(toReturn.get(i-1), toReturn.get(0));}
+            else {toReturn.get(i).link_signals(toReturn.get(toReturn.size()-1), toReturn.get(i+1));}
         }
         return toReturn;
     }
@@ -25,6 +25,7 @@ public class Setup {
                 len = rand.nextInt(50);
             }
             toReturn.add(new Train(String.valueOf(i+1), len, trackList.get(i)));
+            trackList.get(i).set_train(toReturn.get(i), 200);
         }
         return toReturn;
     }

@@ -6,13 +6,16 @@ public class Signal {
     private Track trackBerth;
 
     public Signal(Track track) {
-        this.trackBerth = track;
+        this.trackBerth = track.get_next_track();
     }
 
     public void link_signals(Signal prev, Signal next) {
         this.prevSignal = prev;
         this.nextSignal = prev;
     }
+
+    // THOUGHT: DONT NEED TO LINK SIGNALS IF LINKED TO TRACK, JUST CHECK IF TRAIN ON TRACK, NOT NOT SIGNAL TO SET ASPECT
+    // will be long to change, but might be neccessary. nothing is working rn
 
     public String get_aspect() {
         return this.aspect;

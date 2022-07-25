@@ -11,13 +11,12 @@ public class App {
 
         // set up graphical interface here
         // currently not working on laptop -- need to install javafx, might work on desktop?
-        javafx
 
 
 
         // update loop here: move train first, then update signal.
         while (true){
-            Thread.sleep(1000);
+            Thread.sleep(500);
             for (Train train: trainArray) {
                 train.do_move(train.get_pos().get_track_sig());
             }

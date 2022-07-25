@@ -62,7 +62,8 @@ public class Train {
 
     private int calc_speed(int currSpeed, int maxSpeed, String situation, int trainPos) {         // this function is always called from do_move
         int decelMaxSpeed = 0;
-        switch (situation) {  
+        System.out.println(situation + this.get_td());
+        switch (situation) {
 
             case "red": 
                 // ugly solution of getting train position and using function to measure speed: probably inefficient too

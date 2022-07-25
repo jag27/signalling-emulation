@@ -57,23 +57,28 @@ public class Track {
         this.sig = sig;
     }
 
+    public Track get_next_track() {
+        return this.nextTrack;
+    }
+
     public String move_train(int amount) {
         if (this.has_train() == false) {
             return "no train";
         } else {
+
+            // trains being lost here currently, issue might be due to negative train rear placement <-- should be easy check for this
+            // issue might also be cause by not setting train. currently inefficient by setting trains all the time but it works for now
+            // actually, issue is likely due to trains spad currently, testing rn if trains spad in calcspeed function.
             if ((this.trainRear+amount) > this.trackLength) {
-                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - this.trackLength));
+                this.nextTrack.set_train(this.get_train(), (this.get_train_front() + amount - this.get_track_length()));
                 this.clear_train();
                 return this.nextTrack.get_train().get_td() + " cleared";
             } else if ((this.trainFront+amount) > this.trackLength) {
-                this.nextTrack.set_train(this.get_train(), (this.trainFront + amount - this.trackLength));
+                this.nextTrack.set_train(this.get_train(), (this.get_train_front() + amount - this.get_track_length()));
                 this.trainFront += amount;
                 this.trainRear += amount;
-                return this.get_train().get_td() + " transitioning";
-            } else if ((this.trainFront - this.train.get_length()) < 0) {
-                this.trainFront += amount;
-                this.trainRear = this.trainFront - this.train.get_length();
-                return this.get_train().get_td() + " transitioning";
+                return this.get_train().get_td() + " transitioning response from next track";
+
             } else {
                 this.trainFront += amount;
                 this.trainRear += amount;
