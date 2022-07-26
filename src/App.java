@@ -5,6 +5,11 @@ public class App {
     // what i am working on currently / next time i code:
     // route setting: entry exit style. then graphical interface to allow testing and implementation
 
+
+    // IMPORTANT: multiple trains, trains still get lost somehow, debuggin rn
+    // issue seems to be previous train is on the track the current train is on(?)
+    // dont know why this is happening yet
+
     public static void main(String[] args) throws Exception {
         int numTracks = 10;
         int numTrains = 3;

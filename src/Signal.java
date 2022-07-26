@@ -14,7 +14,8 @@ public class Signal {
     // also the doublely linked list of signals seems overkill anyway. track is single linked list, why should signals be different?
 
 
-    // TO DO NEXT: remove signal linking, get signal aspect to depend DIRECTLY from the track, not other signals.
+    // TO DO NEXT: remove signal linking, get signal aspect to depend DIRECTLY from the track, not other signals.  <-- done
+
 
 
 
