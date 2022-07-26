@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class App {
 
     // what i am working on currently / next time i code:
-    // check signal class
+    // route setting: entry exit style. then graphical interface to allow testing and implementation
 
     public static void main(String[] args) throws Exception {
         int numTracks = 10;

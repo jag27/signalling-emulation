@@ -158,6 +158,16 @@ public class Train {
             // CURRENT MAJOR ISSUE: MIXING UP SPEED WITH DISTANCE/POSITION.
             // trains travel at a speed. emulation can only update the **position** periodically.
             // possibly under control, not got to testing stage yet
+            // position and speed works as intended, might have some decel issues with track lengths. i believe the train should be
+            // able to come to a stop from full speed to red signal, but not tested yet.
+
+            // TESTING PLAN: with the way its coded, everything is relative: hard to have one signal on red without train there
+            // maybe its best to introduce points now? would be easier to test red signals
+            // maybe let user set routes to clear signals: semi automatic signals? would require lots more code on signal
+            // likely will go with the latter: route setting will be needed anyway if points happen.
+            // entry exit style route setting? how to verify route? interlocking? <-- trying to use jargon lol
+            // signals have track berth but arent directly linked; maybe can verify through track berths?
+
 
             // SHOULD LOOK AT GRAPHICAL INTERFACES WITH JAVA: javafx possibly?
             // track layout represented in a circle internally so far.
