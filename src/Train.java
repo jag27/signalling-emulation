@@ -9,6 +9,7 @@ public class Train {
     private int maxSpeed = 100;
     private int dYellowSpeed = 70;
     private int sYellowSpeed = 30;
+    private boolean transitioning = false;
 
     public Train(String description, int length, Track track) {
         this.td = description;
@@ -32,12 +33,20 @@ public class Train {
         return this.currTrack;
     }
 
+    public boolean get_transitioning() {
+        return this.transitioning;
+    }
+
+    public void set_transitioning(boolean value) {
+        this.transitioning = value;
+    }
+
     public void go_next_track() {
         this.currTrack = this.currTrack.get_next_track();
     }
 
     public void do_move(Signal sig) {
-        this.speed = calc_speed(this.speed, this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
+        this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
         String debug = this.get_pos().move_train(this.speed); // get status of train relative to track during track move for debug
 
         System.out.println(debug);
@@ -97,12 +106,12 @@ public class Train {
             case "green" : 
             // inefficieny here, not lagging yet tho.
                 if (this.maxSpeed == currSpeed) {
-                    if (decelMaxSpeed != 0) {
+                    if (decelMaxSpeed == 0) {
                         return currSpeed;
                     }
                 } else { 
-                    if (decelMaxSpeed != 0) {
-                        return currSpeed;
+                    if (decelMaxSpeed == 0) {
+                        return currSpeed+1;
                     }
                 }
         

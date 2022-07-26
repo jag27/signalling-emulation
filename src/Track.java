@@ -71,9 +71,12 @@ public class Track {
             // actually, issue is likely due to trains spad currently, testing rn if trains spad in calcspeed function.
             if ((this.trainRear+amount) > this.trackLength) {
                 this.nextTrack.set_train(this.get_train(), (this.get_train_front() + amount - this.get_track_length()));
+                this.get_train().go_next_track();
+                this.get_train().set_transitioning(false);
                 this.clear_train();
                 return this.nextTrack.get_train().get_td() + " cleared";
             } else if ((this.trainFront+amount) > this.trackLength) {
+                this.get_train().set_transitioning(true);
                 this.nextTrack.set_train(this.get_train(), (this.get_train_front() + amount - this.get_track_length()));
                 this.trainFront += amount;
                 this.trainRear += amount;

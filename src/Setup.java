@@ -11,7 +11,8 @@ public class Setup {
         }
         for (int i=0; i<trackList.size(); i++) {
             if (i==(trackList.size()-1)) {toReturn.get(i).link_signals(toReturn.get(i-1), toReturn.get(0));}
-            else {toReturn.get(i).link_signals(toReturn.get(toReturn.size()-1), toReturn.get(i+1));}
+            else if (i==0) {toReturn.get(i).link_signals(toReturn.get(toReturn.size()-1), toReturn.get(i+1));}
+            else {toReturn.get(i).link_signals(toReturn.get(i-1), toReturn.get(i+1));}
         }
         return toReturn;
     }
