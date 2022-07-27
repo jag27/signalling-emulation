@@ -9,6 +9,13 @@ public class App {
     // IMPORTANT: multiple trains, trains still get lost somehow, debuggin rn
     // issue seems to be previous train is on the track the current train is on(?)
     // dont know why this is happening yet
+    // might be easier to debug with graphical interface?
+
+    // will make graphical interface first, then start full debugging.
+
+    // need to do a LOT of research on javafx. seemed to be installed on desktop, not on my laptop (at least not correctly)
+    // javafx extensions vs code?
+    
 
     public static void main(String[] args) throws Exception {
         int numTracks = 10;
