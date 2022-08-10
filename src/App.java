@@ -17,6 +17,11 @@ public class App {
 
     // need to do a LOT of research on javafx. seemed to be installed on desktop, not on my laptop (at least not correctly)
     // javafx extensions vs code?
+
+    // JAVAFX ADDED TO LIBRARIES. import seems to work now on laptop.
+
+    // IMPORTANT: FIND OUT WHERE REPOSITORY IS ON PC AND SET PATH_TO_FX VARIABLE otherwise i cant compile (i think)
+    // libraries should all be there in libraries folder so ye :)
     
 
     public static void main(String[] args) throws Exception {
