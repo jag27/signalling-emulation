@@ -1,10 +1,9 @@
-import javafx.application.Application;
-
 import java.util.ArrayList;
 
 public class App {
 
     // what i am working on currently / next time i code:
+    // NEW CLASS FOR JAVAFX: lots of research still needed
     // route setting: entry exit style. then graphical interface to allow testing and implementation
 
 
@@ -32,8 +31,10 @@ public class App {
         ArrayList<Train> trainArray = Setup.get_trains(numTrains, trackArray);
 
         // set up graphical interface here
-        // currently not working on laptop -- need to install javafx, might work on desktop?
-
+        // ON SECOND THOUGHTS looks like graphical interface will need its own class (obviously lol)
+        // hopefully this doesnt mean a whole new structure! im sure it will be fine
+        // it kinda goes against what i know of java to have to redo everything, due to
+        // the way java makes classes and stuff
 
 
         // update loop here: move train first, then update signal.
