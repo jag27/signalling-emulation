@@ -84,7 +84,7 @@ public class Track {
                 } else { // train is still on track, nothing else to do
                     return this.train.get_td() + " transition response from rear track";
                 }
-            } else if ((this.trainFront+amount) > this.trackLength) { // train has crossed from one track to another
+            } else if ((this.trainFront+amount) >= this.trackLength) { // train has crossed from one track to another
                 this.get_train().set_transitioning(true);
                 this.nextTrack.set_train(this.train, (this.trainFront + amount - this.get_track_length()));
                 this.trainFront += amount;

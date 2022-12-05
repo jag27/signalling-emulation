@@ -81,18 +81,18 @@ public class Train {
 
     private int calc_speed(int currSpeed, int maxSpeed, String situation, int trainPos) {         // this function is always called from do_move
         int decelMaxSpeed = 0;
+        boolean finalDecel = false;
         System.out.println(situation + " " + this.td);
         System.out.println("current speed:");
         System.out.println(currSpeed);
         System.out.println("max speed");
+
+        // this switch statement sucks. lots of checks: feels like more efficient solution should be posssible
+        // possibly just use if statements instead of case? lots of if statements being used here as well as case anyway
+        // possible create more flags as local variables?
         switch (situation) {
 
             case "red": 
-                // ugly solution of getting train position and using function to measure speed: probably inefficient too
-
-                // THIS IF STATEMENT NEEDS WORK. SPEED OF TRAIN MAY MEAN DECEL IS STARTED TOO LATE.  <- fixed as suggested below
-                // possibly fix by brute force: start decel at max delay between trainpos?
-                // then just crawl up to signal at 1 u/s if there is gap between train front and signal?
 
                 if ((this.currTrack.get_track_length() - trainPos) > 500) {  // checks is in final decel stage. 
                     decelMaxSpeed = this.sYellowSpeed;  // train is not yet slowing to a stop, carry on coast at single yellow speed
@@ -100,7 +100,7 @@ public class Train {
                 } else if (trainPos == this.get_pos().get_track_length()) {
                     return 0;  // train is at red signal: no movement
 
-                } else if (currSpeed > 1) {decelMaxSpeed = 1; System.out.println(decelMaxSpeed);}   // decelerate to 1ups; should arrive at said speed before passing signal
+                } else if (currSpeed > 1) {decelMaxSpeed = 1; System.out.println(decelMaxSpeed); finalDecel = true;}   // decelerate to 1ups; should arrive at said speed before passing signal
                 else {return 1;} // bloat or efficiency: a quick break for trains doing 1ups already and are not at signal
                 
                 // irl train issue here / emulation issue. how does a train decelerate?
@@ -110,28 +110,29 @@ public class Train {
             
             case "green" : 
             // inefficieny here, not lagging yet tho.
-                if (this.maxSpeed == currSpeed) {
-                    if (decelMaxSpeed == 0) {
-                        return currSpeed;
-                    }
-                } else { 
-                    if (decelMaxSpeed == 0) {
-                        return currSpeed+1;
-                    }
+                if (finalDecel) {
+                    maxSpeed = 1;
+                } else if (situation == "green") {
+                    decelMaxSpeed = this.maxSpeed;
                 }
         
-            case "yellow": decelMaxSpeed = this.sYellowSpeed;
-
-
             case "double yellow": 
-                if ((decelMaxSpeed == this.sYellowSpeed) && (situation != "red")) { System.out.println("");} // will need testing if breaks out of if statement or case statement} 
-                else {decelMaxSpeed = this.dYellowSpeed;} 
+                if (finalDecel) {decelMaxSpeed = 1;} // checking sig situation again due to java case statement semantics
+                else if (situation == "double yellow") {
+                    {decelMaxSpeed = this.dYellowSpeed;}
+                }
+
+            case "yellow": 
+                if (finalDecel) { decelMaxSpeed = 1;} // will need testing if breaks out of if statement or case statement} 
+                else if (situation == "yellow") {
+                    {decelMaxSpeed = this.sYellowSpeed;} 
+                }
 
             default: // technically failsafe lol, will eventually slow speed to stop if no above cases hit
                 System.out.println(decelMaxSpeed);
                 
                 if (currSpeed > decelMaxSpeed) {
-                    return currSpeed-2;  // speed may be below max momentarily, fixed inside this case
+                    return currSpeed-3;  // speed may be below max momentarily, fixed inside this case
                 } else if (currSpeed < decelMaxSpeed) {
                     return currSpeed+1;
                 } 

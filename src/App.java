@@ -50,6 +50,16 @@ public class App {
                 sig.update();
             }
 
+            // debug function to see track status
+            // the idea of this reveals issues as to how to implement a gui
+            for (Track track: trackArray) {
+                if (track.has_train()) {
+                    System.out.print("xxxxxx ");
+                } else {
+                    System.out.print("oooooo ");
+                }
+            }
+
         }
     }
 }
