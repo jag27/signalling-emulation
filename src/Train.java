@@ -5,11 +5,11 @@ public class Train {
     private int speed = 0;
     private int trainLength = 0;
     private String td;
-    private Track currTrack;
+    private Track currTrack; // if on two tracks, this will be the rear of the two tracks
     private int maxSpeed = 100;
     private int dYellowSpeed = 70;
     private int sYellowSpeed = 30;
-    private boolean transitioning = false;
+    private boolean transitioning = false; // this flag indicates train is on two tracks: both the current track AND the last track it was on (track behind it)
 
     public Train(String description, int length, Track track) {
         this.td = description;
@@ -33,7 +33,7 @@ public class Train {
         return this.currTrack;
     }
 
-    public boolean get_transitioning() {
+    public boolean is_transitioning() {
         return this.transitioning;
     }
 
@@ -46,9 +46,15 @@ public class Train {
     }
 
     public void do_move(Signal sig) {
-        this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.get_pos().get_train_front());
-        String debug = this.get_pos().move_train(this.speed); // get status of train relative to track during track move for debug
-
+        String debug = "";
+        if (this.is_transitioning()) { // if train is on two tracks, both tracks must be updated
+            this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.currTrack.get_next_track().get_train_front());
+            debug += this.currTrack.get_next_track().move_train(this.speed); // this must be done first to avoid cleanup from prev track causing errors
+            debug += this.currTrack.move_train(this.speed);
+        } else {
+            this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.currTrack.get_train_front());
+            debug += this.currTrack.move_train(this.speed);
+        }
         System.out.println(debug);
 
         // possible improvement could be made here: get rid of this function and just have calcspeed?
@@ -75,7 +81,7 @@ public class Train {
 
     private int calc_speed(int currSpeed, int maxSpeed, String situation, int trainPos) {         // this function is always called from do_move
         int decelMaxSpeed = 0;
-        System.out.println(situation + this.get_td());
+        System.out.println(situation + " " + this.td);
         System.out.println("current speed:");
         System.out.println(currSpeed);
         System.out.println("max speed");
@@ -88,7 +94,7 @@ public class Train {
                 // possibly fix by brute force: start decel at max delay between trainpos?
                 // then just crawl up to signal at 1 u/s if there is gap between train front and signal?
 
-                if ((this.get_pos().get_track_length() - trainPos) > 200) {  // checks is in final decel stage. 
+                if ((this.currTrack.get_track_length() - trainPos) > 500) {  // checks is in final decel stage. 
                     decelMaxSpeed = this.sYellowSpeed;  // train is not yet slowing to a stop, carry on coast at single yellow speed
                     System.out.println(this.sYellowSpeed);
                 } else if (trainPos == this.get_pos().get_track_length()) {
@@ -96,7 +102,6 @@ public class Train {
 
                 } else if (currSpeed > 1) {decelMaxSpeed = 1; System.out.println(decelMaxSpeed);}   // decelerate to 1ups; should arrive at said speed before passing signal
                 else {return 1;} // bloat or efficiency: a quick break for trains doing 1ups already and are not at signal
-                
                 
                 // irl train issue here / emulation issue. how does a train decelerate?
                 // distance-time graph is a parabolica with linear deceleration
@@ -119,21 +124,20 @@ public class Train {
 
 
             case "double yellow": 
-                if (decelMaxSpeed == this.sYellowSpeed) { System.out.println("");} // will need testing if breaks out of if statement or case statement} 
+                if ((decelMaxSpeed == this.sYellowSpeed) && (situation != "red")) { System.out.println("");} // will need testing if breaks out of if statement or case statement} 
                 else {decelMaxSpeed = this.dYellowSpeed;} 
 
             default: // technically failsafe lol, will eventually slow speed to stop if no above cases hit
-            System.out.println(decelMaxSpeed);
-            
-            if (currSpeed > decelMaxSpeed) {
-                return currSpeed-2;  // speed may be below max momentarily, fixed inside this case
-            } else if (currSpeed < decelMaxSpeed) {
-                return currSpeed+1;
-            } else {
-                return currSpeed;
-            }
-
+                System.out.println(decelMaxSpeed);
+                
+                if (currSpeed > decelMaxSpeed) {
+                    return currSpeed-2;  // speed may be below max momentarily, fixed inside this case
+                } else if (currSpeed < decelMaxSpeed) {
+                    return currSpeed+1;
+                } 
         }
+            return currSpeed;
+
     }
 }
             

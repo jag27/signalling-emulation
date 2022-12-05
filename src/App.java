@@ -41,7 +41,7 @@ public class App {
         while (true){
             Thread.sleep(1000);
             for (Train train: trainArray) {
-                if (train.get_transitioning()) {
+                if (train.is_transitioning()) {
                     train.do_move(train.get_pos().get_next_track().get_track_sig()); 
                     // this should fix train reacting to previous signal while transitioning
                 } else {train.do_move(train.get_pos().get_track_sig());}
