@@ -2,6 +2,9 @@ package signalLogic;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+// this class defines startup functions that run on startup of an App instance
+// silly wording of functions here, i guess they arent strictly "getters" in the sense that they set values aswell
 public class Setup {
     public static ArrayList<Signal> get_sigs(ArrayList<Track> trackList) {
         ArrayList<Signal> toReturn = new ArrayList<Signal>();

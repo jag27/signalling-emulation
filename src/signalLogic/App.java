@@ -1,48 +1,37 @@
+    // what i am working on currently / next time i code:
+    // configure UI to look nicer
+    // add features to ui that allow user to customise sim options (number of trains, tracks, etcetera)
+
+    // what i plan to deliver at some point later:
+    // points / route setting for user
+    // entry / exit points for trains (this means a full timetabler)
+    // interlocking for points / routes
+    // level crossings
+    // different train attribute (accel, decel, specific power needs -> can only go on specific tracks)
+    // bi directional working
+    // ability for user to control train direction / remove trains directly from sim
+    // route cancelling
+
 package signalLogic;
 
 import java.util.ArrayList;
 
 public class App {
 
+    // sim variables
     private static int numTracks = 10;
     private static int numTrains = 5;
     private static ArrayList<Track> trackArray = Setup.get_tracks(numTracks);
     private static ArrayList<Signal> sigArray = Setup.get_sigs(trackArray);
     private static ArrayList<Train> trainArray = Setup.get_trains(numTrains, trackArray);
-
-
-    // what i am working on currently / next time i code:
-    // NEW CLASS FOR JAVAFX: lots of research still needed
-    // route setting: entry exit style. then graphical interface to allow testing and implementation
-
-
-    // IMPORTANT: multiple trains, trains still get lost somehow, debuggin rn
-    // issue seems to be previous train is on the track the current train is on(?)
-    // dont know why this is happening yet
-    // might be easier to debug with graphical interface?
-
-    // will make graphical interface first, then start full debugging.
-
-    // need to do a LOT of research on javafx. seemed to be installed on desktop, not on my laptop (at least not correctly)
-    // javafx extensions vs code?
-
-    // JAVAFX ADDED TO LIBRARIES. import seems to work now on laptop.
-
-    // IMPORTANT: FIND OUT WHERE REPOSITORY IS ON PC AND SET PATH_TO_FX VARIABLE otherwise i cant compile (i think)
-    // libraries should all be there in libraries folder so ye :)
+    private static boolean simRunning = false;
 
     public class appThread implements Runnable {
         @Override
-        public void run() {
-            // set up graphical interface here
-            // ON SECOND THOUGHTS looks like graphical interface will need its own class (obviously lol)
-            // hopefully this doesnt mean a whole new structure! im sure it will be fine
-            // it kinda goes against what i know of java to have to redo everything, due to
-            // the way java makes classes and stuff
-    
+        public void run() {    
     
             // update loop here: move train first, then update signal.
-            while (true){
+            while (simRunning){
                     try {
                     Thread.sleep(1000);
                     for (Train train: trainArray) {
@@ -72,9 +61,20 @@ public class App {
     
     
     public void run_sim() {
+        simRunning = true;
         new Thread(new appThread()).start();
     }
 
+    public void toggleSim() {
+        if (simRunning) {
+            simRunning = false; // not an immediate pause to the sim here, instead it does one last cycle, loop in thread is false therefore thread finished and is dead
+            // if immediate pause is wanted, could kill thread explicitly?
+        } else {
+            run_sim();
+        }
+    }
+
+    // getters of main objects: very general, could refine to return more specific objects rather than big arraylists?
     public ArrayList<Track> get_tracks() {
         return trackArray;
     }

@@ -10,6 +10,7 @@ public class Track {
 
 
     public Track(int length) {
+        // constructor that defines track length. other attributes are initialised in link tracks or during runtime
         this.trackLength = length;
     }
 
@@ -17,6 +18,7 @@ public class Track {
         this.nextTrack = next;
     }
 
+    // setters and getters for track attributes. 
     public boolean has_train() {
         if (this.train == null) {
             return false;
@@ -30,10 +32,11 @@ public class Track {
     public void set_train(Train id, int pos) {
         this.train = id;
         this.trainFront = pos;
-        this.trainRear = pos - id.get_length(); // this value can and will be negative when new train enters
+        this.trainRear = pos - id.get_length(); // this value can be negative when new train enters
     }
 
     public void clear_train() {
+        // remove train from track attributes
         this.train = null;
         this.trainFront = 0;
         this.trainRear = 0;
@@ -63,18 +66,14 @@ public class Track {
         return this.nextTrack;
     }
 
+    // Main logic for train movement is actaully done here in the track class
     public String move_train(int amount) {
-        if (this.has_train() == false) {
-            return "no train";
-        } else {
+        // *takes the distance that the train on this track moves*
+        // currently returns string for debug purposes, will possibly move to boolean / void return value in a release
 
-            // trains being lost here currently, issue might be due to negative train rear placement <-- should be easy check for this
-            // issue might also be cause by not setting train. currently inefficient by setting trains all the time but it works for now
-            // actually, issue is likely due to trains spad currently, testing rn if trains spad in calcspeed function.
-        
-            // a different approach to this is to maybe remove train rear attribute altogether?
-            // instead add a boolean flag to the train to say if its on 2 tracks at once
-            // this would speed up the update function: would only need to check for rear once
+        if (this.has_train() == false) {
+            return "no train"; // primative error catch -> raise exception here instead? Return false if no train on track?
+        } else {
             if ((this.train.is_transitioning()) && (this.train.get_pos().nextTrack.get_train() == this.train)) { // double check: transitioning train AND track is prev track (not current track)
                 this.trainFront += amount;
                 this.trainRear += amount;
@@ -93,7 +92,7 @@ public class Track {
                 this.trainRear += amount;
                 return this.train.get_td() + " transitioning response from front track";
 
-            } else {
+            } else { // no special case, simply move train internally
                 this.trainFront += amount;
                 this.trainRear += amount;
                 return this.train.get_td() + " moved";

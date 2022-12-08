@@ -10,11 +10,13 @@ public class Train {
     private boolean transitioning = false; // this flag indicates train is on two tracks: both the current track AND the last track it was on (track behind it)
 
     public Train(String description, int length, Track track) {
+        // train constructor. trains must have an id, length and designated track at all times
         this.td = description;
         this.trainLength = length;
         this.currTrack = track;
     }
 
+    // setters and getters
     public int get_speed() {
         return this.speed;
     }
@@ -43,6 +45,8 @@ public class Train {
         this.currTrack = this.currTrack.get_next_track();
     }
 
+    // move this train according to the signal passed
+    // note that actual train movement is done within the Track class, this just sets the speed and calls the function in Track to move the train
     public void do_move(Signal sig) {
         String debug = "";
         if (this.is_transitioning()) { // if train is on two tracks, both tracks must be updated
@@ -77,6 +81,9 @@ public class Train {
         }
 
 
+    // arbitary function to calc the speed of a train based on its current speed, max speed, signal state and train position
+    // this function needs addressing: why private but passing args that are accessible anyway?
+    // int for train pos? very vague: possibly better to pass track? (although track is accessible within this class anyway)
     private int calc_speed(int currSpeed, int maxSpeed, String situation, int trainPos) {         // this function is always called from do_move
         int decelMaxSpeed = 0;
         boolean finalDecel = false;
@@ -140,44 +147,47 @@ public class Train {
 
     }
 }
-            
+            // not neccessary to read, just my musings and observations during development. i put it here since speed calc felt like hardest part
+            // probably out of date, but take a look if you want
+
+            // last updated: 8/12/2022
             // LIKELY NOT A GOOD SOLUTION: MISSING SOMETHING AND I DONT KNOW WHAT AND ITS PISSING ME OFF  <- still true, feels like there is better solution somehwere
             // RECURSIVE FUNCTION COULD WORK?????  cant see this working: recursive but sleeping between calls? doesnt make sense
 
             // MAYBE THE FUNCTION CAN BE SIMPLE? PREDETERMINED DECEL POINT?  <-- this is solution used so far
-            // HOW TO CALL THIS, MUST CHECK EVERY UPDATE?  <-- yes, if red signal is in place. can skip check if at proceed signal
-            // BEST WAY TO CALL DECEL FUNCTION IS TO CHECK AT DECEL POIINT? hard code decel point for red signals? <-- seems best idea
-            // HOW TO DECEL FOR YELLOWS: DECEL IMMEDIATELY?  <-- yes, this is implemented. decel to certain speed after passing signal
+            // HOW TO CALL THIS, MUST CHECK EVERY UPDATE?  <-- yes
+            // HOW TO DECEL FOR YELLOWS: DECEL IMMEDIATELY?  <-- yes, this is implemented. decel to certain speed according to the next signal the train will pass / stop at
 
             // currently have two different functions for train movement:
             // do_move and calc_speed. do_move was intended to be called everytime the sim updates (default 1 second)
-            // however calc_speed may be called more often: more accurate speed?  <- not nessecary: might provide more accuracy in the long run tho
-            // maybe a recursive function could work after all?  <-- highly unlikely
+            // however calc_speed may be called more often: more accurate speed?  <- not nessecary: might provide more irl accuracy in the long run tho
+            // maybe a recursive function could work after all?  <-- very highly unlikely
             
             // MUST be careful train does not SPAD: should be encapsulated in red signal case  <-- current solution is brake before train needs to and coast last part at 1ups
-            // if train SPADs, program will break
+            // if train SPADs, program will continure running, but be complete garbage
+            // no exception raised: this needs to be implemeted really
 
 
 
             // CURRENT MAJOR ISSUE: MIXING UP SPEED WITH DISTANCE/POSITION.
             // trains travel at a speed. emulation can only update the **position** periodically.
-            // possibly under control, not got to testing stage yet
+            // possibly under control, not got to testing stage yet <-- tested, everything seems to work
             // position and speed works as intended, might have some decel issues with track lengths. i believe the train should be
-            // able to come to a stop from full speed to red signal, but not tested yet.
+            // able to come to a stop from full speed to red signal, but not tested yet. <-- tested, can decel fast enough if goes through all singal states (dyellow, syellow, red)
 
             // TESTING PLAN: with the way its coded, everything is relative: hard to have one signal on red without train there
-            // maybe its best to introduce points now? would be easier to test red signals
-            // maybe let user set routes to clear signals: semi automatic signals? would require lots more code on signal
+            // maybe its best to introduce points now? would be easier to test red signals <-- no, will include these MUCH later
+            // maybe let user set routes to clear signals: semi automatic signals? would require lots more code on signal <-- this could be implemented with relative ease now
             // likely will go with the latter: route setting will be needed anyway if points happen.
             // entry exit style route setting? how to verify route? interlocking? <-- trying to use jargon lol
-            // signals have track berth but arent directly linked; maybe can verify through track berths?
+            // signals have track berth but arent directly linked; maybe can verify through track berths? <-- they are actually directly linked now: signal has track attribute
 
 
-            // SHOULD LOOK AT GRAPHICAL INTERFACES WITH JAVA: javafx possibly?
-            // track layout represented in a circle internally so far.
-            // could actually be made interactive with one line; get user to add a train to line: have a queue of trains waiting to enter area?
-            // make different linespeeds, so on and so forth.
-            // ultimately, i want the train moving and signal controlling to remain universal:
+            // SHOULD LOOK AT GRAPHICAL INTERFACES WITH JAVA: javafx possibly? <-- yes
+            // track layout represented in a circle internally so far. <-- still an internal circle, but all visual representations are a line that loops (like snake game)
+            // could actually be made interactive with one line; get user to add a train to line: have a queue of trains waiting to enter area? <-- will implement later, not high priority
+            // make different linespeeds, so on and so forth. <-- interesting idea, would be fun to code this. not high priority tho
+            // ultimately, i want the train moving and signal controlling to remain universal: <-- achieved so far
             // meaning any track layout should be supported: points have not been considered at all yet, but seem pretty simple
             // station emulation is new end goal: i am thinking very far ahead here, but that seems pretty cool to me:
             // having a station of a somewhat large stature and have ars to route trains: possibly scalable with universal track junction before station?
