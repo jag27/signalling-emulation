@@ -1,7 +1,10 @@
 package signalLogic;
 
+import javafx.scene.paint.Color;
 public class Signal {
+    private Color color = Color.GREEN;
     private String aspect = "green";
+    private boolean dYellow = false;
     private Track trackBerth;
 
     public Signal(Track track) {
@@ -22,10 +25,17 @@ public class Signal {
 
     // DIRECTION IS IMPORTANT when updating signals. <-- is this true?
 
+    public Color get_color() {
+        return this.color;
+    }
+
     public String get_aspect() {
         return this.aspect;
     }
 
+    public boolean get_d_yellow() {
+        return this.dYellow;
+    }
 
     public Track get_track() { 
         return this.trackBerth;
@@ -33,15 +43,25 @@ public class Signal {
 
     public void update() {
         if (this.get_track().has_train()) {
+            this.color = Color.RED;
+            this.dYellow = false;
             this.aspect = "red";
 
         } else if (this.get_track().get_next_track().has_train()) {
+            this.color = Color.YELLOW;
+            this.dYellow = false;
             this.aspect = "yellow";
 
         } else if (this.get_track().get_next_track().get_next_track().has_train()) {
+            this.color = Color.YELLOW;
+            this.dYellow = true;
             this.aspect = "double yellow";
             
-        } else {this.aspect = "green";}
+        } else {
+            this.color = Color.SPRINGGREEN; 
+            this.dYellow = false;
+            this.aspect = "green";
+        }
     }
 
 }
