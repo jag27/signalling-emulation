@@ -70,7 +70,7 @@ public class GraphicInterface extends Application{
             }
         }));
         autoUpdate.setCycleCount(Timeline.INDEFINITE);
-        // autoUpdate.play(); <- was used to immediately start running sim
+        // autoUpdate.play(); <- was used to immediately start running sim: not needed
         // myApp.run_sim(); <- was used to immediately start running sim
 
         // action event for toggleSimPause
