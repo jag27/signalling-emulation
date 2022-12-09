@@ -16,13 +16,14 @@ import javafx.scene.shape.Rectangle;
 import signalLogic.App;
 
 public class GraphicInterface extends Application{
+    private App myApp;
 
     @Override
     public void start(Stage stage) {
         // Label title = new Label("hello world");
 
         // create instance of sim to reference and run
-        App myApp = new App();
+        myApp = new App();
 
         // create ui variables
         Button toggleSimPause = new Button("Start");
@@ -43,6 +44,8 @@ public class GraphicInterface extends Application{
         }
 
         // set ui attributes
+        toggleSimPause.setLayoutX(340);
+        toggleSimPause.setLayoutY(250);
         g.getChildren().add(toggleSimPause);
         Scene scene = new Scene(g);
         stage.setMinHeight(480);
@@ -88,6 +91,11 @@ public class GraphicInterface extends Application{
         };
         toggleSimPause.setOnAction(togglePause);
 
+    }
+
+    @Override
+    public void stop() {
+        myApp.stop_sim();
     }
 
     public static void main(String[] args) {

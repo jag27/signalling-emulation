@@ -74,6 +74,11 @@ public class App {
         }
     }
 
+    // method to stop sim when application exits but sim is still running
+    public void stop_sim() {
+        simRunning = false;
+    }
+
     // getters of main objects: very general, could refine to return more specific objects rather than big arraylists?
     public ArrayList<Track> get_tracks() {
         return trackArray;
