@@ -5,7 +5,7 @@ public class Signal {
     private Color color = Color.GREEN;
     private String aspect = "green";
     private boolean dYellow = false;
-    private Track trackBerth;
+    private final Track trackBerth;
 
     public Signal(Track track) {
         // constructor for signal: must be linked to a track

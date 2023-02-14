@@ -19,14 +19,14 @@ import java.util.ArrayList;
 public class App {
 
     // sim variables
-    private static int numTracks = 10;
+    private static final int numTracks = 10;
     private static int numTrains = 5;
-    private static ArrayList<Track> trackArray = Setup.get_tracks(numTracks);
-    private static ArrayList<Signal> sigArray = Setup.get_sigs(trackArray);
+    private static final ArrayList<Track> trackArray = Setup.get_tracks(numTracks);
+    private static final ArrayList<Signal> sigArray = Setup.get_sigs(trackArray);
     private static ArrayList<Train> trainArray = Setup.get_trains(numTrains, trackArray);
     private static boolean simRunning = false;
 
-    public class appThread implements Runnable {
+    public static class appThread implements Runnable {
         @Override
         public void run() {    
     

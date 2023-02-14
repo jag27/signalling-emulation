@@ -25,7 +25,7 @@ public class Setup {
             while (len < 10) {
                 len = rand.nextInt(50);
             }
-            toReturn.add(new Train("train id " + String.valueOf(i+1), len, trackList.get(i)));
+            toReturn.add(new Train("train id " + (i+1), len, trackList.get(i)));
             trackList.get(i).set_train(toReturn.get(i), 200);
         }
         return toReturn;

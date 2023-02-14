@@ -2,7 +2,7 @@ package signalLogic;
 
 public class Track {
     private Train train = null;
-    private int trackLength = 0;
+    private int trackLength;
     private Track nextTrack;
     private int trainFront;
     private int trainRear;
@@ -20,9 +20,7 @@ public class Track {
 
     // setters and getters for track attributes. 
     public boolean has_train() {
-        if (this.train == null) {
-            return false;
-        } else { return true; }
+        return this.train != null;
     }
 
     public Train get_train() {
@@ -71,7 +69,7 @@ public class Track {
         // *takes the distance that the train on this track moves*
         // currently returns string for debug purposes, will possibly move to boolean / void return value in a release
 
-        if (this.has_train() == false) {
+        if (!this.has_train()) {
             return "no train"; // primative error catch -> raise exception here instead? Return false if no train on track?
         } else {
             if ((this.train.is_transitioning()) && (this.train.get_pos().nextTrack.get_train() == this.train)) { // double check: transitioning train AND track is prev track (not current track)

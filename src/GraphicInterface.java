@@ -80,7 +80,7 @@ public class GraphicInterface extends Application{
         EventHandler<ActionEvent> togglePause = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 myApp.toggleSim();
-                if ((toggleSimPause.getText() == "Start") || (toggleSimPause.getText() == "Resume")) {
+                if ((toggleSimPause.getText().equals("Start")) || (toggleSimPause.getText().equals("Resume"))) {
                     toggleSimPause.setText("Pause");
                     autoUpdate.play();
                 } else {

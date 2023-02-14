@@ -1,12 +1,12 @@
 package signalLogic;
 public class Train {
     private int speed = 0;
-    private int trainLength = 0;
+    private int trainLength;
     private String td;
     private Track currTrack; // if on two tracks, this will be the rear of the two tracks
-    private int maxSpeed = 100;
-    private int dYellowSpeed = 70;
-    private int sYellowSpeed = 30;
+    private final int maxSpeed = 100;
+    private final int dYellowSpeed = 70;
+    private final int sYellowSpeed = 30;
     private boolean transitioning = false; // this flag indicates train is on two tracks: both the current track AND the last track it was on (track behind it)
 
     public Train(String description, int length, Track track) {
@@ -52,11 +52,10 @@ public class Train {
         if (this.is_transitioning()) { // if train is on two tracks, both tracks must be updated
             this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.currTrack.get_next_track().get_train_front());
             debug += this.currTrack.get_next_track().move_train(this.speed); // this must be done first to avoid cleanup from prev track causing errors
-            debug += this.currTrack.move_train(this.speed);
         } else {
             this.speed = calc_speed(this.get_speed(), this.maxSpeed, sig.get_aspect(), this.currTrack.get_train_front());
-            debug += this.currTrack.move_train(this.speed);
         }
+        debug += this.currTrack.move_train(this.speed);
         System.out.println(debug);
 
         // possible improvement could be made here: get rid of this function and just have calcspeed?
@@ -118,13 +117,13 @@ public class Train {
             // inefficieny here, not lagging yet tho.
                 if (finalDecel) {
                     maxSpeed = 1;
-                } else if (situation == "green") {
+                } else if (situation.equals("green")) {
                     decelMaxSpeed = this.maxSpeed;
                 }
         
             case "double yellow": 
                 if (finalDecel) {decelMaxSpeed = 1;} // checking sig situation again due to java case statement semantics
-                else if (situation == "double yellow") {
+                else if (situation.equals("double yellow")) {
                     {decelMaxSpeed = this.dYellowSpeed;}
                 }
 
