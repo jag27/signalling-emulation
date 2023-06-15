@@ -1,6 +1,6 @@
     // what i am working on currently / next time i code:
-    // configure UI to look nicer
-    // add features to ui that allow user to customise sim options (number of trains, tracks, etcetera)
+    // TODO: configure UI to look nicer
+    // TODO: add features to ui that allow user to customise sim options (number of trains, tracks, etcetera)
 
     // what i plan to deliver at some point later:
     // points / route setting for user
